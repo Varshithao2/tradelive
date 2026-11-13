@@ -79,7 +79,6 @@
         block: |
           Match User trader
           AuthenticationMethods publickey,keyboard-interactive
-      notify: Restart SSH
 
     - name: Install a sudoers policy
       copy:
@@ -91,10 +90,11 @@
           Cmnd_Alias GREETING_CTL = /usr/bin/systemctl start greeting, \
                                     /usr/bin/systemctl stop greeting, \
                                     /usr/bin/systemctl restart greeting, \
-                                    /usr/bin/systemctl status greeting, \
-                                    sudoedit /opt/engineering/greeting.py
-          %developers ALL=(root) NOPASSWD: GREETING_CTL
+                                    /usr/bin/systemctl status greeting
+          %developers ALL=(root) NOPASSWD: GREETING_CTL, \
+                                           sudoedit /opt/engineering/greeting.py
         validate: 'visudo -cf %s'
+
     - name: Create engineering directory
       file:
         path: /opt/engineering
